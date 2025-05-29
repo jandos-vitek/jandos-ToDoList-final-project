@@ -122,7 +122,7 @@ public class SaveButton extends Button {
     }
     public boolean validName(String name){
         boolean validName=!name.trim().isEmpty();
-        if(!validName){
+        if(!validName) {
             emptyName.setTextFill(Color.RED);
         }
         return validName;
