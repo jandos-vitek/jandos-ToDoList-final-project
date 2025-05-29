@@ -81,13 +81,6 @@ public class SaveButton extends Button {
             boolean isDateValid = validDate(date.getEditor().getText());
             boolean isNumberOfDaysValid=validDays(repeatingDays.getText());
 
-            if (!isTimeValid || !isNameValid || !isDateValid) {
-                return;
-            }
-            boolean isDateInFuture =futureDate();
-            if(!isDateInFuture){
-                return;
-            }
             int days;
             if(isCustom.get()){
                 if(!isNumberOfDaysValid){
@@ -98,6 +91,15 @@ public class SaveButton extends Button {
             else {
                 days=numberOfDays.get();
             }
+
+            if (!isTimeValid || !isNameValid || !isDateValid) {
+                return;
+            }
+            boolean isDateInFuture =futureDate();
+            if(!isDateInFuture){
+                return;
+            }
+
 
             listOfTasks.addTask(new Task(name.getText(),  description.getText(),dateAndTime(time.getText(),date.getValue()),isRepeating.get(),days));
             homePage = new HomePage(listOfTasks);

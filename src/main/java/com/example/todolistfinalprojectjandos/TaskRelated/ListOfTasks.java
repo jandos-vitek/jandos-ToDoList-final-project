@@ -30,7 +30,13 @@ public class ListOfTasks implements Serializable {
         observableTasks.setAll(tasks);
     }
     public void saveTasks() {
-        File tasksFile=new File("data/tasks.ser");
+        File tasksFile = new File("data/tasks.ser");
+
+        File parentDir = tasksFile.getParentFile();
+        if (!parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tasksFile))) {
             out.writeObject(tasks);
         } catch (FileNotFoundException e) {
