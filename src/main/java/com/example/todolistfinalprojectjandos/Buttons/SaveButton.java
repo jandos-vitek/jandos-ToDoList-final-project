@@ -83,16 +83,12 @@ public class SaveButton extends Button {
 
             int days;
             if(isCustom.get()){
-                if(!isNumberOfDaysValid){
-                    return;
-                }
                 days=Integer.parseInt(repeatingDays.getText());
             }
             else {
                 days=numberOfDays.get();
             }
-
-            if (!isTimeValid || !isNameValid || !isDateValid) {
+            if (!isTimeValid || !isNameValid || !isDateValid||!isNumberOfDaysValid) {
                 return;
             }
             boolean isDateInFuture =futureDate();
@@ -132,7 +128,10 @@ public class SaveButton extends Button {
         return validName;
     }
     public boolean validDays(String days){
-        boolean validDays=!repeatingDays.getText().trim().isEmpty();
+        boolean validDays=true;
+        if(isCustom.get()) {
+             validDays = !repeatingDays.getText().trim().isEmpty();
+        }
         if(!validDays){
             emptyDays.setTextFill(Color.RED);
         }
