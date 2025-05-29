@@ -103,6 +103,9 @@ public class UpdateButton extends Button {
             task.setDescription(description.getText());
             task.setDateTime(dateAndTime(time.getText(),date.getValue()));
             task.setNumberOfDays(days);
+            if(days!=0){
+                task.setRepeating(true);
+            }
 
             homePage = new HomePage(listOfTasks);
             stage.setScene(homePage.getScene(stage));
