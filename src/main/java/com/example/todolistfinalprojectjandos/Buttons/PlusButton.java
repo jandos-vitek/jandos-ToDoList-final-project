@@ -7,13 +7,13 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class PlusButton extends Button {
-    ImageView plusIcon;
+    private ImageView plusIcon;
     private ListOfTasks listOfTasks;
     private Stage stage;
     public PlusButton(ListOfTasks listOfTasks,Stage stage) {
         this.listOfTasks=listOfTasks;
         this.stage=stage;
-         plusIcon = new ImageView(getClass().getResource("/plus.png").toExternalForm());
+        plusIcon = new ImageView(getClass().getResource("/plus.png").toExternalForm());
         plusIcon.setFitWidth(35);
         plusIcon.setFitHeight(35);
 
