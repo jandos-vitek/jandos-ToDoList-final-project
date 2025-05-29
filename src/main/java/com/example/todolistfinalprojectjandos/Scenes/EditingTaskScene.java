@@ -26,7 +26,7 @@ public class EditingTaskScene {
         editingTaskScene = new Scene(root, 720, 450, Color.WHITE);
         taskMaking = new TaskMaking(stage, listOfTasks);
 
-        taskMaking.getTitle().getTitle().setText("NEW TASK");
+        taskMaking.getTitle().getTitle().setText(task.getName());
 
         double x = (450 - taskMaking.getTitle().getTitle().getBoundsInLocal().getWidth()) / 2;
         taskMaking.getTitle().getTitle().setX(x);
@@ -45,11 +45,9 @@ public class EditingTaskScene {
 
         LocalDateTime taskDateTime=task.getDateTime();
 
-        String minute;
-        if(taskDateTime.getMinute()==0){
-            minute="00";
-        }else {
-            minute=String.valueOf(taskDateTime.getMinute()) ;
+        String minute=String.valueOf(taskDateTime.getMinute()) ;
+        if(minute.length()==1){
+            minute="0"+minute;
         }
 
 

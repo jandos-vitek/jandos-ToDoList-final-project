@@ -61,6 +61,7 @@ public class CreatingTaskScene {
                taskMaking.getRepeatingMenu().getNumberOfDays(), taskMaking.getRepeatingMenu().getIsRepeating(), taskMaking.getRepeatingMenu().getIsCustom());
 
 root.getChildren().add(saveButton);
+        root.getChildren().add(taskMaking.getBackButton());
 
         return creatingTask;
     }

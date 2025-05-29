@@ -66,11 +66,9 @@ public class Task implements Serializable, Comparable<Task> {
 
     @Override
     public String toString() {
-        String minute;
-        if(dateTime.getMinute()==0){
-            minute="00";
-        }else {
-            minute=String.valueOf(dateTime.getMinute()) ;
+        String minute=String.valueOf(dateTime.getMinute()) ;
+        if(minute.length()==1){
+            minute="0"+minute;
         }
         return  name +" "+ dateTime.getHour()+":"+minute+"   "+dateTime.getDayOfMonth()+". "+ dateTime.getMonthValue()+". "+dateTime.getYear();
 
