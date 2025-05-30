@@ -1,21 +1,23 @@
 package com.example.todolistfinalprojectjandos.TaskRelated;
 
+import com.example.todolistfinalprojectjandos.RepeatType;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Task implements Serializable, Comparable<Task> {
     private String name,description;
     private LocalDateTime dateTime;
-    private boolean isRepeating;
     private int numberOfDays;
+    private RepeatType repeatType;
 
 
-    public Task(String name, String description, LocalDateTime dateTime, boolean isRepeating, int numberOfDays) {
+    public Task(String name, String description, LocalDateTime dateTime, int numberOfDays, RepeatType repeatType) {
         this.name = name;
         this.description = description;
         this.dateTime = dateTime;
-        this.isRepeating = isRepeating;
         this.numberOfDays = numberOfDays;
+        this.repeatType = repeatType;
     }
 
     public String getName() {
@@ -29,10 +31,6 @@ public class Task implements Serializable, Comparable<Task> {
 
     public LocalDateTime getDateTime() {
         return dateTime;
-    }
-
-    public boolean isRepeating() {
-        return isRepeating;
     }
 
     public int getNumberOfDays() {
@@ -50,13 +48,16 @@ public class Task implements Serializable, Comparable<Task> {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
-
-    public void setRepeating(boolean repeating) {
-        isRepeating = repeating;
+        public void setNumberOfDays(int numberOfDays) {
+        this.numberOfDays = numberOfDays;
     }
 
-    public void setNumberOfDays(int numberOfDays) {
-        this.numberOfDays = numberOfDays;
+    public RepeatType getRepeatType() {
+        return repeatType;
+    }
+
+    public void setRepeatType(RepeatType repeatType) {
+        this.repeatType = repeatType;
     }
 
     @Override

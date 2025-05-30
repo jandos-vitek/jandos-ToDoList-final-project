@@ -47,9 +47,9 @@ public class TaskCell extends ListCell<Task> {
                 """);
         done.setOnAction(e -> {
             if (task != null) {
-                if(task.isRepeating()) {
+                if(task.getNumberOfDays()!=0) {
                     LocalDateTime newTime=task.getDateTime().plusDays(task.getNumberOfDays());
-                    listOfTasks.addTask(new Task(task.getName(),task.getDescription(),newTime,task.isRepeating(),task.getNumberOfDays()));
+                    listOfTasks.addTask(new Task(task.getName(),task.getDescription(),newTime,task.getNumberOfDays(),task.getRepeatType()));
                 }
                 listOfTasks.removeTask(task);
             }

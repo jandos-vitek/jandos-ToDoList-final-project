@@ -24,7 +24,6 @@ public class TaskDetail {
     private Title title;
     private Text description;
     private RemoveButton removeButton;
-    private HomePage homePage;
     private EditButton editButton;
 
     public Scene getScene(Stage stage) {
@@ -56,12 +55,6 @@ public class TaskDetail {
         editButton=new EditButton(listOfTasks,stage,task);
         root.getChildren().add(editButton);
 
-
-        removeButton.setOnAction(e -> {
-            listOfTasks.removeTask(task);
-            homePage = new HomePage(listOfTasks);
-            stage.setScene(homePage.getScene(stage));
-        });
 
 
         return taskDetail;

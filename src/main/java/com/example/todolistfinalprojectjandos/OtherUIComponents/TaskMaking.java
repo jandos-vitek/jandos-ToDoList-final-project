@@ -23,6 +23,7 @@ public class TaskMaking {
     private ErrorMessages errorMessages;
     private  RepeatingMenu repeatingMenu;
 
+
     public TaskMaking(Stage stage,ListOfTasks listOfTasks) {
         title=new Title();
         this.stage=stage;
@@ -78,14 +79,15 @@ public class TaskMaking {
         date.setStyle("""
                     -fx-background-color: white;
                     -fx-border-color: rgb(83,83,83);
+                    -fx-prompt-text-fill: rgb(83,83,83);
+                    -fx-border-width: 1;
                     -fx-border-radius: 5px;
                     -fx-max-height: 50px;
                 -fx-min-height: 50px;
                 -fx-max-width: 300px;
                 -fx-min-width: 300px;
                 -fx-font-size: 25px;
-                -fx-focus-color: transparent;
-                -fx-faint-focus-color: transparent;
+                
                 """);
         dateTextField = date.getEditor();
         dateTextField.setStyle("""
@@ -109,6 +111,7 @@ public class TaskMaking {
                 -fx-max-width: 300px;
                 -fx-min-width: 300px;
                 -fx-border-radius: 5px;
+                
                     
                     """);
         time.setTextFormatter(new TextFormatter<>(change -> {
@@ -123,8 +126,8 @@ public class TaskMaking {
 
         errorMessages = new ErrorMessages();
 
-        errorMessages.getMessages().setLayoutX(20);
-        errorMessages.getMessages().setLayoutY(550);
+        errorMessages.getAllMessages().setLayoutX(20);
+        errorMessages.getAllMessages().setLayoutY(550);
 
         repeatingMenu = new RepeatingMenu();
 

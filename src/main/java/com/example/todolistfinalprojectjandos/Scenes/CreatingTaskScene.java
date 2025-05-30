@@ -1,15 +1,10 @@
 package com.example.todolistfinalprojectjandos.Scenes;
 
-import com.example.todolistfinalprojectjandos.Buttons.BackButton;
 import com.example.todolistfinalprojectjandos.Buttons.SaveButton;
-import com.example.todolistfinalprojectjandos.OtherUIComponents.ErrorMessages;
-import com.example.todolistfinalprojectjandos.OtherUIComponents.RepeatingMenu;
 import com.example.todolistfinalprojectjandos.OtherUIComponents.TaskMaking;
-import com.example.todolistfinalprojectjandos.OtherUIComponents.Title;
 import com.example.todolistfinalprojectjandos.TaskRelated.ListOfTasks;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -55,10 +50,7 @@ public class CreatingTaskScene {
 
         root.getChildren().add(taskMaking.getErrorMessages().getAllMessages());
 
-       saveButton=new SaveButton(listOfTasks,stage,taskMaking.getErrorMessages().getDateError(), taskMaking.getErrorMessages().getTimeError(),
-               taskMaking.getErrorMessages().getPastError(), taskMaking.getErrorMessages().getEmptyName(), taskMaking.getErrorMessages().getEmptyDays(), taskMaking.getName(),
-               taskMaking.getDate(),taskMaking.getDescription(),taskMaking.getTime(),taskMaking.getRepeatingMenu().getRepeatingTextField(),
-               taskMaking.getRepeatingMenu().getNumberOfDays(), taskMaking.getRepeatingMenu().getIsRepeating(), taskMaking.getRepeatingMenu().getIsCustom());
+       saveButton=new SaveButton(listOfTasks,stage,taskMaking);
 
 root.getChildren().add(saveButton);
         root.getChildren().add(taskMaking.getBackButton());

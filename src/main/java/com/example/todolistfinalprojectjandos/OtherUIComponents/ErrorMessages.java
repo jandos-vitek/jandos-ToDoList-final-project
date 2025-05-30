@@ -4,6 +4,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/**
+ * Here are all the error messages created and added to a VBox
+ */
 public class ErrorMessages {
     private VBox messages;
     private Label dateError;
@@ -11,9 +14,10 @@ public class ErrorMessages {
     private Label pastError;
     private Label emptyName;
     private Label emptyDays;
-    public Node getMessages() {
-        return messages;
-    }
+
+    /**
+     * Here are the messages created and added to a VBox
+     */
 
     public ErrorMessages() {
         messages=new VBox();
@@ -22,26 +26,11 @@ public class ErrorMessages {
         pastError = new Label("You cannot make the task be in the past");
         emptyName = new Label("Name is missing");
         emptyDays = new Label("Number of days is missing");
-        pastError.setStyle("""
-                -fx-text-fill: transparent;
-                -fx-font-size: 18;
-                        """);
-        dateError.setStyle("""
-                -fx-text-fill: transparent;
-                -fx-font-size: 18;
-                        """);
-        timeError.setStyle("""
-                -fx-text-fill: transparent;
-                -fx-font-size: 18;
-                        """);
-        emptyName.setStyle("""
-                -fx-text-fill: transparent;
-                -fx-font-size: 18;
-                        """);
-       emptyDays.setStyle("""
-                -fx-text-fill: transparent;
-                -fx-font-size: 18
-                        """);
+        setLooks(dateError);
+        setLooks(timeError);
+        setLooks(pastError);
+        setLooks(emptyName);
+        setLooks(emptyDays);
 
         messages.getChildren().add(emptyName);
         messages.getChildren().add(emptyDays);
@@ -49,6 +38,17 @@ public class ErrorMessages {
         messages.getChildren().add(timeError);
         messages.getChildren().add(pastError);
     }
+
+    /**
+     * This sets the looks of the label
+     * @param label is the label
+     */
+    public void setLooks(Label label){
+        label.setStyle("""
+                -fx-text-fill: transparent;
+                -fx-font-size: 18
+                        """);
+}
 
     public Label getDateError() {
         return dateError;

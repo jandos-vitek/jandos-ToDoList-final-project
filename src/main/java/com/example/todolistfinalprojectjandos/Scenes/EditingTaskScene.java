@@ -1,6 +1,7 @@
 package com.example.todolistfinalprojectjandos.Scenes;
 import com.example.todolistfinalprojectjandos.Buttons.UpdateButton;
 import com.example.todolistfinalprojectjandos.OtherUIComponents.TaskMaking;
+import com.example.todolistfinalprojectjandos.RepeatType;
 import com.example.todolistfinalprojectjandos.TaskRelated.ListOfTasks;
 import com.example.todolistfinalprojectjandos.TaskRelated.Task;
 import javafx.scene.Group;
@@ -63,25 +64,20 @@ public class EditingTaskScene {
 
 
 
-        switch (task.getNumberOfDays()) {
-            case 0 -> taskMaking.getRepeatingMenu().getRepeatingLabel().setText("No repeat");
-            case 1 -> taskMaking.getRepeatingMenu().getRepeatingLabel().setText("Daily");
-            case 7 -> taskMaking.getRepeatingMenu().getRepeatingLabel().setText("Weekly");
-            case 30 -> taskMaking.getRepeatingMenu().getRepeatingLabel().setText("Monthly");
-            default -> taskMaking.getRepeatingMenu().getRepeatingLabel().setText("Repeat");
+        switch (task.getRepeatType()) {
+            case NONE -> taskMaking.getRepeatingMenu().setAction("No repeat", 0, true, RepeatType.NONE);
+            case DAILY -> taskMaking.getRepeatingMenu().setAction("Repeat daily", 1, true, RepeatType.DAILY);
+            case WEEKLY -> taskMaking.getRepeatingMenu().setAction("Repeat weekly", 7, true, RepeatType.WEEKLY);
+            case MONTHLY -> taskMaking.getRepeatingMenu().setAction("Repeat monthly", 30, true, RepeatType.MONTHLY);
+            case CUSTOM -> taskMaking.getRepeatingMenu().setAction("Different", task.getNumberOfDays(), false, RepeatType.CUSTOM);
         }
 
         root.getChildren().add(taskMaking.getRepeatingMenu().getRepeatingLabel());
         root.getChildren().add(taskMaking.getRepeatingMenu().getRepeatingTextField());
-        taskMaking.getRepeatingMenu().getRepeatingTextField().setText(String.valueOf(task.getNumberOfDays()));
         root.getChildren().add(taskMaking.getRepeatingMenu().getRepeatingButton());
-
         root.getChildren().add(taskMaking.getErrorMessages().getAllMessages());
 
-updateButton=new UpdateButton(task,listOfTasks,stage,taskMaking.getErrorMessages().getDateError(), taskMaking.getErrorMessages().getTimeError(),
-        taskMaking.getErrorMessages().getPastError(), taskMaking.getErrorMessages().getEmptyName(), taskMaking.getErrorMessages().getEmptyDays(), taskMaking.getName(),
-        taskMaking.getDate(),taskMaking.getDescription(),taskMaking.getTime(),taskMaking.getRepeatingMenu().getRepeatingTextField(),
-        taskMaking.getRepeatingMenu().getNumberOfDays(), taskMaking.getRepeatingMenu().getIsRepeating(), taskMaking.getRepeatingMenu().getIsCustom());
+updateButton=new UpdateButton(task,listOfTasks,stage,taskMaking);
 
 root.getChildren().add(updateButton);
 

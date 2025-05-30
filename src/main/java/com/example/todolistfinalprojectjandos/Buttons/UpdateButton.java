@@ -1,5 +1,7 @@
 package com.example.todolistfinalprojectjandos.Buttons;
 
+import com.example.todolistfinalprojectjandos.OtherUIComponents.TaskMaking;
+import com.example.todolistfinalprojectjandos.RepeatType;
 import com.example.todolistfinalprojectjandos.Scenes.HomePage;
 import com.example.todolistfinalprojectjandos.TaskRelated.ListOfTasks;
 import com.example.todolistfinalprojectjandos.TaskRelated.Task;
@@ -11,47 +13,28 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
+/**
+ * Custom button that is used for editing tasks
+ * It validates the user input before editing the task
+ * If the input is wrong it shows the corresponding error message
+ */
 public class UpdateButton extends Button {
     private ListOfTasks listOfTasks;
-    private Task task;
     private Stage stage;
     private HomePage homePage;
-    private Label dateError;
-    private Label timeError;
-    private Label pastError;
-    private Label emptyName;
-    private Label emptyDays;
+    private TaskMaking taskMaking;
+    private Task task;
 
-    private TextField name;
-    private DatePicker date;
-    private TextArea description;
-    private TextField time;
-    private TextField repeatingDays;
-    private AtomicInteger numberOfDays;
-    private AtomicBoolean isRepeating;
-    private AtomicBoolean isCustom;
 
-    public UpdateButton(Task task, ListOfTasks listOfTasks, Stage stage, Label dateError, Label timeError,
-                        Label pastError, Label emptyName, Label emptyDays, TextField name, DatePicker date, TextArea description, TextField time,
-                        TextField repeatingDays, AtomicInteger numberOfDays, AtomicBoolean isRepeating, AtomicBoolean isCustom) {
-        this.task=task;
+
+    public UpdateButton(Task task, ListOfTasks listOfTasks, Stage stage, TaskMaking taskMaking) {
         this.listOfTasks = listOfTasks;
         this.stage = stage;
-        this.dateError = dateError;
-        this.timeError = timeError;
-        this.pastError = pastError;
-        this.emptyName = emptyName;
-        this.emptyDays = emptyDays;
-        this.name = name;
-        this.date = date;
-        this.description = description;
-        this.time = time;
-        this.repeatingDays = repeatingDays;
-        this.numberOfDays = numberOfDays;
-        this.isRepeating = isRepeating;
-        this.isCustom = isCustom;
-        setText("UPDATE");
+        this.taskMaking = taskMaking;
+        this.task=task;
+
+
+        setText("SAVE");
         setStyle("""            
                 -fx-background-color: rgb(0, 110, 255);
                 -fx-text-fill: black;
@@ -68,91 +51,140 @@ public class UpdateButton extends Button {
 
         setAction();
     }
-    public void setAction(){
-        setOnAction(e->{
-            timeError.setTextFill(Color.TRANSPARENT);
-            dateError.setTextFill(Color.TRANSPARENT);
-            pastError.setTextFill(Color.TRANSPARENT);
-            emptyName.setTextFill(Color.TRANSPARENT);
-            emptyDays.setTextFill(Color.TRANSPARENT);
 
-            boolean isTimeValid = validTime(time.getText());
-            boolean isNameValid = validName(name.getText());
-            boolean isDateValid = validDate(date.getEditor().getText());
-            boolean isNumberOfDaysValid=validDays(repeatingDays.getText());
+    /**
+     * Sets the action for the save button.
+     * Checks the users input and then it creates new task and adds it to listOfTasks
+     * If there is something wrong with teh input it shows corresponding error message and stops
+     */
+    public void setAction() {
+        setOnAction(e -> {
+            taskMaking.getErrorMessages().getTimeError().setTextFill(Color.TRANSPARENT);
+            taskMaking.getErrorMessages().getDateError().setTextFill(Color.TRANSPARENT);
+            taskMaking.getErrorMessages().getPastError().setTextFill(Color.TRANSPARENT);
+            taskMaking.getErrorMessages().getEmptyDays().setTextFill(Color.TRANSPARENT);
+            taskMaking.getErrorMessages().getEmptyName().setTextFill(Color.TRANSPARENT);
 
-            if (!isTimeValid || !isNameValid || !isDateValid) {
+            String name=taskMaking.getName().getText();
+            String time=taskMaking.getTime().getText();
+            String dateString=taskMaking.getDate().getEditor().getText();
+            String numberOfDays=taskMaking.getRepeatingMenu().getRepeatingTextField().getText();
+            String description=taskMaking.getDescription().getText();
+
+            LocalDate date= taskMaking.getDate().getValue();
+
+            RepeatType repeatType=taskMaking.getRepeatingMenu().getRepeatType();
+
+            boolean isTimeValid = validTime(time);
+            boolean isNameValid = validName(name);
+            boolean isDateValid = validDate(dateString);
+            boolean isNumberOfDaysValid = validDays(numberOfDays);
+
+
+            if (!isTimeValid || !isNameValid || !isDateValid || !isNumberOfDaysValid) {
                 return;
             }
-            boolean isDateInFuture =futureDate();
-            if(!isDateInFuture){
+
+
+            boolean isDateInFuture = futureDate(time,date);
+            if (!isDateInFuture) {
                 return;
             }
-            int days;
-            if(isCustom.get()){
-                if(!isNumberOfDaysValid){
-                    return;
-                }
-                days=Integer.parseInt(repeatingDays.getText());
-            }
-            else {
-                days=numberOfDays.get();
-            }
+            task.setName(name);
+            task.setDescription(description);
+            task.setDateTime(dateAndTime(time,date));
+            task.setNumberOfDays(Integer.parseInt(numberOfDays));
+            task.setRepeatType(repeatType);
 
-            task.setName(name.getText());
-            task.setDescription(description.getText());
-            task.setDateTime(dateAndTime(time.getText(),date.getValue()));
-            task.setNumberOfDays(days);
-            if(days!=0){
-                task.setRepeating(true);
-            }
 
             homePage = new HomePage(listOfTasks);
             stage.setScene(homePage.getScene(stage));
 
 
-
-
         });
     }
-    public boolean validTime(String time){
-        boolean validTime=time.matches("(([0]?[0-9])|([1][0-9])|2[0-3]):[0-5][0-9]");
-        if(!validTime){
-            timeError.setTextFill(Color.RED);
+
+    /**
+     * This checks if the text matches a regex, therefore if the time is written correctly
+     *
+     * @param time is the String it checks
+     * @return boolean if it is valid or not
+     */
+    public boolean validTime(String time) {
+        boolean validTime = time.matches("(([0]?[0-9])|([1][0-9])|2[0-3]):[0-5][0-9]");
+        if (!validTime) {
+            taskMaking.getErrorMessages().getTimeError().setTextFill(Color.RED);
         }
         return validTime;
     }
-    public boolean validDate(String date){
-        boolean validDate=date.matches("^(?:(?:31/(?:0?[13578]|1[02]))|(?:29|30)/(?:0?[1,3-9]|1[0-2])|(?:0?[1-9]|1\\d|2[0-8])/0?2|(?:0?[1-9]|1\\d|2[0-8])/(?:0?[1-9]|1[0-2]))/(?:19|20)\\d{2}$");
-        if(!validDate){
-            dateError.setTextFill(Color.RED);
+
+    /**
+     * This checks if the text matches a regex, therefore if the date is written correctly
+     * THIS REGEX WAS GENERATED BY AI
+     *
+     * @param date is the String it checks
+     * @return boolean if it is valid or not
+     */
+    public boolean validDate(String date) {
+        boolean validDate = date.matches("^(?:(?:31/(?:0?[13578]|1[02]))|(?:29|30)/(?:0?[1,3-9]|1[0-2])|(?:0?[1-9]|1\\d|2[0-8])/0?2|(?:0?[1-9]|1\\d|2[0-8])/(?:0?[1-9]|1[0-2]))/(?:19|20)\\d{2}$");
+        if (!validDate) {
+            taskMaking.getErrorMessages().getDateError().setTextFill(Color.RED);
         }
         return validDate;
     }
-    public boolean validName(String name){
-        boolean validName=!name.trim().isEmpty();
-        if(!validName){
-            emptyName.setTextFill(Color.RED);
+
+    /**
+     * This checks if the text is not empty
+     *
+     * @param name is the String it checks
+     * @return boolean if it is valid or not
+     */
+    public boolean validName(String name) {
+        boolean validName = !name.trim().isEmpty();
+        if (!validName) {
+            taskMaking.getErrorMessages().getEmptyName().setTextFill(Color.RED);
         }
         return validName;
     }
-    public boolean validDays(String days){
-        boolean validDays=!repeatingDays.getText().trim().isEmpty();
-        if(!validDays){
-            emptyDays.setTextFill(Color.RED);
+
+    /**
+     * This checks if the text is not empty
+     *
+     * @param days is the String it checks
+     * @return boolean if it is valid or not
+     */
+    public boolean validDays(String days) {
+        boolean validDays = !days.trim().isEmpty();
+
+        if (!validDays) {
+            taskMaking.getErrorMessages().getEmptyDays().setTextFill(Color.RED);
         }
         return validDays;
     }
-    public boolean futureDate(){
-        LocalDateTime currentDateTime=LocalDateTime.now();
-        boolean futureDate=dateAndTime(time.getText(),date.getValue()).isAfter(currentDateTime);
-        if(!futureDate){
-            pastError.setTextFill(Color.RED);
+
+    /**
+     * This compares the dateAndTime of the task with current dateAndTime
+     * It basically stops user from creating task in the past
+     *
+     * @return boolean if it is in the future (which is good)
+     */
+    public boolean futureDate(String time, LocalDate date) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        boolean futureDate = dateAndTime(time, date).isAfter(currentDateTime);
+        if (!futureDate) {
+            taskMaking.getErrorMessages().getPastError().setTextFill(Color.RED);
         }
         return futureDate;
     }
 
-    public LocalDateTime dateAndTime(String time, LocalDate date){
+    /**
+     * This method puts together localDate and String and makes localDateAndTime
+     *
+     * @param time is the String
+     * @param date is the localDate
+     * @return localDateAndTime, which is then used in the task
+     */
+    public LocalDateTime dateAndTime(String time, LocalDate date) {
         String[] splitTime = time.split(":");
         int year = date.getYear();
         int month = date.getMonthValue();
@@ -164,5 +196,5 @@ public class UpdateButton extends Button {
 
         return dateAndTime;
     }
-
 }
+
