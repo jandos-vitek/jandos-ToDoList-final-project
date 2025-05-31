@@ -43,7 +43,7 @@ public class RemoveButton extends Button {
     /**
      * This sets the action for the button
      * It removes the task from listOfTasks
-     * It creates the scene and then it sets current scene to it
+     * It creates the Homepage scene and then sets current scene to it
      */
     public void setAction(){
         setOnAction(e -> {

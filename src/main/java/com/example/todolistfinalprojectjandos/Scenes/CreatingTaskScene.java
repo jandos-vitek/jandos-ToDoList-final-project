@@ -8,19 +8,26 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-
-public class CreatingTaskScene {
+/**
+ * Class, that has a scene that is used for creating task
+ */
+public class CreatingTaskScene{
 
     private ListOfTasks listOfTasks;
     private TaskMaking taskMaking;
     private Group root;
     private SaveButton saveButton;
+    private Scene creatingTask;
 
-
+    /**
+     * The visual elements are added to the root here
+     * @param stage is the main and only stage, it is there for setting the scene
+     * @return creatingTaskScene, it is used for setting the scene
+     */
     public Scene getScene(Stage stage) {
         root = new Group();
-        Scene creatingTask = new Scene(root, 720, 450, Color.WHITE);
-        taskMaking = new TaskMaking(stage,listOfTasks);
+        creatingTask = new Scene(root, 720, 450, Color.WHITE);
+        taskMaking = new TaskMaking(stage, listOfTasks);
 
         taskMaking.getTitle().getTitle().setText("NEW TASK");
 
@@ -50,9 +57,9 @@ public class CreatingTaskScene {
 
         root.getChildren().add(taskMaking.getErrorMessages().getAllMessages());
 
-       saveButton=new SaveButton(listOfTasks,stage,taskMaking);
+        saveButton = new SaveButton(listOfTasks, stage, taskMaking);
 
-root.getChildren().add(saveButton);
+        root.getChildren().add(saveButton);
         root.getChildren().add(taskMaking.getBackButton());
 
         return creatingTask;

@@ -19,11 +19,20 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This class represents the home screen of the to-do list application
+ * Shows the list of tasks, the current time and plus button to add new tasks
+ */
 public class HomePage {
     private ListOfTasks listOfTasks;
     private Title title;
     private PlusButton plusButton;
 
+    /**
+     * The visual elements are added to the root here
+     * @param stage is the main and only stage, it is there for setting the scene
+     * @return homePage, it is used for setting the scene
+     */
     public Scene getScene(Stage stage) {
         Group root = new Group();
         Scene homeScene = new Scene(root, 450, 720, Color.WHITE);
@@ -71,15 +80,6 @@ public class HomePage {
                 -fx-font-size: 30;
                                     """);
         time.setTextFill(Color.BLACK);
-
-        time.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), e -> {
-                    time.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-                })
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
         root.getChildren().add(time);
 
         Label date = new Label();
@@ -92,11 +92,18 @@ public class HomePage {
 
         root.getChildren().add(date);
 
+        //THIS WAS MADE BY AI
+        time.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    time.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         date.setText(LocalDate.now().format(dateFormatter));
-
-
         Timeline timeline2 = new Timeline(
                 new KeyFrame(Duration.seconds(60), e -> {
                     date.setText(LocalDate.now().format(dateFormatter));

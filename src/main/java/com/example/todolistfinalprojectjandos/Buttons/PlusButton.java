@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 /**
- * Button that is used for opening homePage
+ * Button that is used for opening CreatingTaskScene
  */
 public class PlusButton extends Button {
     private ImageView plusIcon;
@@ -42,7 +42,7 @@ public class PlusButton extends Button {
     }
     /**
      * This sets the action for the button
-     * It just creates the scene and then it sets current scene to it
+     * It creates the CreatingTaskScene scene and then sets current scene to it
      */
     public void setAction(){
         setOnAction(e -> {

@@ -46,7 +46,7 @@ public class ErrorMessages {
     public void setLooks(Label label){
         label.setStyle("""
                 -fx-text-fill: transparent;
-                -fx-font-size: 18
+                -fx-font-size: 16
                         """);
 }
 

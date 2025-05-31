@@ -7,9 +7,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The main stage of the project
+ */
 public class MainStage {
     ListOfTasks listOfTasks;
     Stage stage;
+
+    /**
+     * The looks of the stage are defined here
+     * @param stage  is the main and only stage, it is there for setting the scene
+     * @throws IOException
+     */
     public MainStage(Stage stage) throws IOException {
         listOfTasks=new ListOfTasks();
         this.stage=stage;

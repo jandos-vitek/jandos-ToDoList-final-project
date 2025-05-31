@@ -47,7 +47,7 @@ public class EditButton extends Button {
 
     /**
      * This sets the action for the button
-     * It just creates the scene and then it sets current scene to it
+     * It creates the EditingTaskScene scene and then sets current scene to it
      */
     public void setAction(){
         setOnAction(e -> {

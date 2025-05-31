@@ -9,6 +9,10 @@ import javafx.scene.control.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class handles the user task repetition options.
+ * It allows users to select from predefined repeat types or create a custom repeat interval,
+ */
 public class RepeatingMenu {
 
     private Button repeatingButton;
@@ -24,6 +28,9 @@ public class RepeatingMenu {
     private AtomicInteger numberOfDays;
     private RepeatType repeatType;
 
+    /**
+     * initializing the repeat options, layout of controls, styling, and event handlers for each option.
+     */
     public RepeatingMenu() {
         repeatingLabel = new Label("Repeat");
         setLooks(repeatingLabel);
@@ -94,6 +101,15 @@ public class RepeatingMenu {
                 """);
     }
 
+
+    /**
+     * Updates the UI and variables based on the selected repeat option.
+     *
+     * @param text is the label that tells the user what option he chose.
+     * @param numberOfDays is the number of days between repetitions.
+     * @param disable controls when will the repeatingTextField be disabled and invisible .
+     * @param repeatType is the type of repeat selected.
+     */
     public void setAction(String text, int numberOfDays, boolean disable, RepeatType repeatType) {
         repeatingLabel.setText(text);
         repeatingTextField.setDisable(disable);
@@ -103,10 +119,16 @@ public class RepeatingMenu {
         this.numberOfDays.set(numberOfDays);
     }
 
+
     public RepeatType getRepeatType() {
         return repeatType;
     }
 
+    /**
+     * Applies a consistent style to a node
+     *
+     * @param node is the node to style
+     */
     public void setLooks(Node node) {
         node.setStyle("""
                 -fx-background-color: white;
@@ -122,6 +144,9 @@ public class RepeatingMenu {
                     """);
     }
 
+    /**
+     * Sets a text formatter for the repeatingTextField, so the user can write only numbers
+     */
     public void setRepeatingTextFieldFormatter() {
         repeatingTextField.setTextFormatter(new TextFormatter<>(change -> {
             String newText = change.getText();
@@ -131,6 +156,7 @@ public class RepeatingMenu {
             return change;
         }));
     }
+
 
     public Button getRepeatingButton() {
         return repeatingButton;

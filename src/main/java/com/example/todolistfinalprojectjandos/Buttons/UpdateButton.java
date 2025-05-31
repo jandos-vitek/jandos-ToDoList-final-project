@@ -18,183 +18,39 @@ import java.util.concurrent.atomic.AtomicInteger;
  * It validates the user input before editing the task
  * If the input is wrong it shows the corresponding error message
  */
-public class UpdateButton extends Button {
-    private ListOfTasks listOfTasks;
-    private Stage stage;
-    private HomePage homePage;
-    private TaskMaking taskMaking;
+public class UpdateButton extends AbstractSaveButton {
     private Task task;
-
-
-
-    public UpdateButton(Task task, ListOfTasks listOfTasks, Stage stage, TaskMaking taskMaking) {
-        this.listOfTasks = listOfTasks;
-        this.stage = stage;
-        this.taskMaking = taskMaking;
-        this.task=task;
-
-
-        setText("SAVE");
-        setStyle("""            
-                -fx-background-color: rgb(0, 110, 255);
-                -fx-text-fill: black;
-                -fx-font-size: 25px;
-                -fx-font-weight: bold;
-                -fx-max-height: 50px;
-                -fx-min-height: 50px;
-                -fx-max-width: 140px;
-                -fx-min-width: 140px;              
-                -fx-background-radius: 5px;     
-                """);
-        setLayoutX(260);
-        setLayoutY(590);
+    /**
+     * Normal constructor where the action is set
+     * @param listOfTasks is the list where all the tasks are added
+     * @param stage is the main and only stage, it is there for setting the scene
+     * @param taskMaking is a class where are all the things needed for creating a task, except the button
+     * @param task is the task user is editing
+     */
+    public UpdateButton(ListOfTasks listOfTasks, Stage stage, TaskMaking taskMaking, Task task) {
+        super(listOfTasks, stage, taskMaking);
+        this.task = task;
 
         setAction();
+        setText("UPDATE");
     }
-
     /**
-     * Sets the action for the save button.
-     * Checks the users input and then it creates new task and adds it to listOfTasks
-     * If there is something wrong with teh input it shows corresponding error message and stops
+     * This checks if everything is valid, then it updates the task and returns to the homepage
      */
     public void setAction() {
         setOnAction(e -> {
-            taskMaking.getErrorMessages().getTimeError().setTextFill(Color.TRANSPARENT);
-            taskMaking.getErrorMessages().getDateError().setTextFill(Color.TRANSPARENT);
-            taskMaking.getErrorMessages().getPastError().setTextFill(Color.TRANSPARENT);
-            taskMaking.getErrorMessages().getEmptyDays().setTextFill(Color.TRANSPARENT);
-            taskMaking.getErrorMessages().getEmptyName().setTextFill(Color.TRANSPARENT);
+            if(isEverythingValid()) {
+                task.setRepeatType(repeatType);
+                task.setDescription(description);
+                task.setDateTime(dateAndTime(time,date));
+                task.setName(name);
+                task.setNumberOfDays(Integer.parseInt(numberOfDays));
+                listOfTasks.saveTasks();
+                homePage = new HomePage(listOfTasks);
+                stage.setScene(homePage.getScene(stage));
 
-            String name=taskMaking.getName().getText();
-            String time=taskMaking.getTime().getText();
-            String dateString=taskMaking.getDate().getEditor().getText();
-            String numberOfDays=taskMaking.getRepeatingMenu().getRepeatingTextField().getText();
-            String description=taskMaking.getDescription().getText();
-
-            LocalDate date= taskMaking.getDate().getValue();
-
-            RepeatType repeatType=taskMaking.getRepeatingMenu().getRepeatType();
-
-            boolean isTimeValid = validTime(time);
-            boolean isNameValid = validName(name);
-            boolean isDateValid = validDate(dateString);
-            boolean isNumberOfDaysValid = validDays(numberOfDays);
-
-
-            if (!isTimeValid || !isNameValid || !isDateValid || !isNumberOfDaysValid) {
-                return;
             }
-
-
-            boolean isDateInFuture = futureDate(time,date);
-            if (!isDateInFuture) {
-                return;
-            }
-            task.setName(name);
-            task.setDescription(description);
-            task.setDateTime(dateAndTime(time,date));
-            task.setNumberOfDays(Integer.parseInt(numberOfDays));
-            task.setRepeatType(repeatType);
-
-
-            homePage = new HomePage(listOfTasks);
-            stage.setScene(homePage.getScene(stage));
-
-
         });
-    }
-
-    /**
-     * This checks if the text matches a regex, therefore if the time is written correctly
-     *
-     * @param time is the String it checks
-     * @return boolean if it is valid or not
-     */
-    public boolean validTime(String time) {
-        boolean validTime = time.matches("(([0]?[0-9])|([1][0-9])|2[0-3]):[0-5][0-9]");
-        if (!validTime) {
-            taskMaking.getErrorMessages().getTimeError().setTextFill(Color.RED);
-        }
-        return validTime;
-    }
-
-    /**
-     * This checks if the text matches a regex, therefore if the date is written correctly
-     * THIS REGEX WAS GENERATED BY AI
-     *
-     * @param date is the String it checks
-     * @return boolean if it is valid or not
-     */
-    public boolean validDate(String date) {
-        boolean validDate = date.matches("^(?:(?:31/(?:0?[13578]|1[02]))|(?:29|30)/(?:0?[1,3-9]|1[0-2])|(?:0?[1-9]|1\\d|2[0-8])/0?2|(?:0?[1-9]|1\\d|2[0-8])/(?:0?[1-9]|1[0-2]))/(?:19|20)\\d{2}$");
-        if (!validDate) {
-            taskMaking.getErrorMessages().getDateError().setTextFill(Color.RED);
-        }
-        return validDate;
-    }
-
-    /**
-     * This checks if the text is not empty
-     *
-     * @param name is the String it checks
-     * @return boolean if it is valid or not
-     */
-    public boolean validName(String name) {
-        boolean validName = !name.trim().isEmpty();
-        if (!validName) {
-            taskMaking.getErrorMessages().getEmptyName().setTextFill(Color.RED);
-        }
-        return validName;
-    }
-
-    /**
-     * This checks if the text is not empty
-     *
-     * @param days is the String it checks
-     * @return boolean if it is valid or not
-     */
-    public boolean validDays(String days) {
-        boolean validDays = !days.trim().isEmpty();
-
-        if (!validDays) {
-            taskMaking.getErrorMessages().getEmptyDays().setTextFill(Color.RED);
-        }
-        return validDays;
-    }
-
-    /**
-     * This compares the dateAndTime of the task with current dateAndTime
-     * It basically stops user from creating task in the past
-     *
-     * @return boolean if it is in the future (which is good)
-     */
-    public boolean futureDate(String time, LocalDate date) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        boolean futureDate = dateAndTime(time, date).isAfter(currentDateTime);
-        if (!futureDate) {
-            taskMaking.getErrorMessages().getPastError().setTextFill(Color.RED);
-        }
-        return futureDate;
-    }
-
-    /**
-     * This method puts together localDate and String and makes localDateAndTime
-     *
-     * @param time is the String
-     * @param date is the localDate
-     * @return localDateAndTime, which is then used in the task
-     */
-    public LocalDateTime dateAndTime(String time, LocalDate date) {
-        String[] splitTime = time.split(":");
-        int year = date.getYear();
-        int month = date.getMonthValue();
-        int day = date.getDayOfMonth();
-        int hour = Integer.parseInt(splitTime[0]);
-        int minute = Integer.parseInt(splitTime[1]);
-
-        LocalDateTime dateAndTime = LocalDateTime.of(year, month, day, hour, minute);
-
-        return dateAndTime;
     }
 }
 

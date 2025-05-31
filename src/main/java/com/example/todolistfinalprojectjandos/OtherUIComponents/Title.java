@@ -5,12 +5,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
+/**
+ * Represents a styled title composed of a blue rectangle background,
+ * a black separator line, and a customizable text title.
+ */
 public class Title {
     private Rectangle blueBox;
     private Rectangle blackLine;
     private Text title;
 
+    /**
+     *  Initializes the visual elements of the title component
+     */
     public Title() {
         blueBox = new Rectangle(0, 0, 450, 60);
         blueBox.setFill(Color.rgb(0, 110, 255));

@@ -4,12 +4,16 @@ import com.example.todolistfinalprojectjandos.Buttons.BackButton;
 import com.example.todolistfinalprojectjandos.Buttons.SaveButton;
 import com.example.todolistfinalprojectjandos.TaskRelated.ListOfTasks;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 
+/**
+ * This class contains everything that is needed for creating or updating a task, except the buttons
+ */
 public class TaskMaking {
     private ListOfTasks listOfTasks;
     private Stage stage;
@@ -23,7 +27,11 @@ public class TaskMaking {
     private ErrorMessages errorMessages;
     private  RepeatingMenu repeatingMenu;
 
-
+    /**
+     * Constructs the UI components needed for task creation
+     * @param listOfTasks is the list where all the tasks are added
+     * @param stage is the main and only stage, it is there for setting the scene
+     */
     public TaskMaking(Stage stage,ListOfTasks listOfTasks) {
         title=new Title();
         this.stage=stage;
@@ -36,39 +44,18 @@ public class TaskMaking {
         name = new TextField("");
         name.setLayoutX(75);
         name.setLayoutY(150);
-        name.setStyle("""
-                -fx-background-color: white;
-                -fx-border-color: rgb(83,83,83);
-                -fx-border-width: 1;
-                -fx-prompt-text-fill: rgb(83,83,83);
-                -fx-font-size: 25;
-                -fx-max-height: 50px;
-                -fx-min-height: 50px;
-                -fx-max-width: 300px;
-                -fx-min-width: 300px;
-                -fx-border-radius: 5px;
-                    
-                    """);
+        name.setMaxHeight(50);
+        name.setMinHeight(50);
+        setLooks(name);
 
 
 
         description = new TextArea();
         description.setLayoutX(75);
         description.setLayoutY(210);
-        description.setStyle("""
-                -fx-background-color: white;
-                -fx-border-color: rgb(83,83,83);
-                -fx-border-width: 1;
-                -fx-prompt-text-fill: rgb(83,83,83);
-                -fx-font-size: 25px;
-                -fx-max-height: 100px;
-                -fx-min-height: 100px;
-                -fx-max-width: 300px;
-                -fx-min-width: 300px;
-                -fx-border-radius: 5px;
-                -fx-focus-color: transparent;
-                -fx-faint-focus-color: transparent;    
-                    """);
+        setLooks(description);
+        description.setMaxHeight(100);
+        description.setMinHeight(100);
 
 
 
@@ -76,19 +63,9 @@ public class TaskMaking {
         date = new DatePicker();
         date.setLayoutX(75);
         date.setLayoutY(320);
-        date.setStyle("""
-                    -fx-background-color: white;
-                    -fx-border-color: rgb(83,83,83);
-                    -fx-prompt-text-fill: rgb(83,83,83);
-                    -fx-border-width: 1;
-                    -fx-border-radius: 5px;
-                    -fx-max-height: 50px;
-                -fx-min-height: 50px;
-                -fx-max-width: 300px;
-                -fx-min-width: 300px;
-                -fx-font-size: 25px;
-                
-                """);
+        date.setMaxHeight(50);
+        date.setMinHeight(50);
+        setLooks(date);
         dateTextField = date.getEditor();
         dateTextField.setStyle("""
                 -fx-prompt-text-fill: rgb(83,83,83);
@@ -100,27 +77,11 @@ public class TaskMaking {
         time = new TextField("");
         time.setLayoutX(75);
         time.setLayoutY(380);
-        time.setStyle("""
-                -fx-background-color: white;
-                -fx-border-color: rgb(83,83,83);
-                -fx-border-width: 1;
-                -fx-prompt-text-fill: rgb(83,83,83);
-                -fx-font-size: 25;
-                -fx-max-height: 50px;
-                -fx-min-height: 50px;
-                -fx-max-width: 300px;
-                -fx-min-width: 300px;
-                -fx-border-radius: 5px;
-                
-                    
-                    """);
-        time.setTextFormatter(new TextFormatter<>(change -> {
-            String newText = change.getText();
-            if (!newText.matches("[0-9:]*")) {
-                return null;
-            }
-            return change;
-        }));
+        time.setMaxHeight(50);
+        time.setMinHeight(50);
+        setLooks(time);
+        setTextFormatter();
+
 
 
 
@@ -132,6 +93,39 @@ public class TaskMaking {
         repeatingMenu = new RepeatingMenu();
 
     }
+    /**
+     * Applies a consistent style to a node
+     *
+     * @param node is the node to style
+     */
+    public void setLooks(Node node){
+        node.setStyle("""
+                        -fx-background-color: white;
+                        -fx-border-color: rgb(83,83,83);
+                        -fx-border-width: 1;
+                        -fx-prompt-text-fill: rgb(83,83,83);
+                        -fx-font-size: 25;
+                        -fx-max-width: 300px;
+                        -fx-min-width: 300px;
+                        -fx-border-radius: 5px;
+                        -fx-focus-color: transparent;
+                                -fx-faint-focus-color: transparent; 
+                                """
+                    );
+
+    }
+    /**
+     * Sets a text formatter for the time, so the user can write only numbers and :
+     */
+public void setTextFormatter(){
+    time.setTextFormatter(new TextFormatter<>(change -> {
+        String newText = change.getText();
+        if (!newText.matches("[0-9:]*")) {
+            return null;
+        }
+        return change;
+    }));
+}
 
 
     public TextField getName() {

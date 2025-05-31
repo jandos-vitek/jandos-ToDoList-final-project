@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
- * Button that is used for opening homePage
+ * Button that is used for opening HomePage
  */
 public class BackButton extends Button{
     private ImageView icon;
@@ -39,7 +39,7 @@ public class BackButton extends Button{
     }
     /**
      * This sets the action for the button
-     * It just creates the scene and then it sets current scene to it
+     * It creates the Homepage scene and then sets current scene to it
      */
     public void setAction(){
         setOnAction(e -> {

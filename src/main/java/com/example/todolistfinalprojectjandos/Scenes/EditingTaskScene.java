@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+/**
+ * Class, that has a scene that is used for editing task
+ */
 public class EditingTaskScene {
     private ListOfTasks listOfTasks;
     private Task task;
@@ -21,7 +23,11 @@ public class EditingTaskScene {
     private Scene editingTaskScene;
     private UpdateButton updateButton;
 
-
+    /**
+     * The visual elements are added to teh root here
+     * @param stage is the main and only stage, it is there for setting the scene
+     * @return editingTaskScene, it is used for setting the scene
+     */
     public Scene getScene(Stage stage) {
         root = new Group();
         editingTaskScene = new Scene(root, 720, 450, Color.WHITE);
@@ -77,7 +83,7 @@ public class EditingTaskScene {
         root.getChildren().add(taskMaking.getRepeatingMenu().getRepeatingButton());
         root.getChildren().add(taskMaking.getErrorMessages().getAllMessages());
 
-updateButton=new UpdateButton(task,listOfTasks,stage,taskMaking);
+updateButton=new UpdateButton(listOfTasks,stage,taskMaking,task);
 
 root.getChildren().add(updateButton);
 

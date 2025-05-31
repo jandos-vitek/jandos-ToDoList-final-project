@@ -15,6 +15,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Class, that has a scene that is used viewing the detail of the task
+ */
 public class TaskDetail {
     private ListOfTasks listOfTasks;
     private Group root;
@@ -25,7 +28,11 @@ public class TaskDetail {
     private Text description;
     private RemoveButton removeButton;
     private EditButton editButton;
-
+    /**
+     * The visual elements are added to the root here
+     * @param stage is the main and only stage, it is there for setting the scene
+     * @return taskDetail, it is used for setting the scene
+     */
     public Scene getScene(Stage stage) {
         root = new Group();
         taskDetail = new Scene(root, 720, 450, Color.WHITE);

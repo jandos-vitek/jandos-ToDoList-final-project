@@ -5,6 +5,9 @@ import com.example.todolistfinalprojectjandos.RepeatType;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * This class contains all the important values, that task should have, such as name, due date, description ...
+ */
 public class Task implements Serializable, Comparable<Task> {
     private String name,description;
     private LocalDateTime dateTime;
@@ -60,11 +63,19 @@ public class Task implements Serializable, Comparable<Task> {
         this.repeatType = repeatType;
     }
 
+    /**
+     * Compares the date of the task, ensuring the tasks are unique and sorted
+     * @param other the object to be compared.
+     * @return if it is bigger, smaller or same
+     */
     @Override
     public int compareTo(Task other) {
         return this.dateTime.compareTo(other.dateTime);
     }
 
+    /**
+     * @return a String of values, in aa order, they will be viewed
+     */
     @Override
     public String toString() {
         String minute=String.valueOf(dateTime.getMinute()) ;
@@ -74,6 +85,11 @@ public class Task implements Serializable, Comparable<Task> {
         return  name +" "+ dateTime.getHour()+":"+minute+"   "+dateTime.getDayOfMonth()+". "+ dateTime.getMonthValue()+". "+dateTime.getYear();
 
     }
+
+    /**
+     * Finds out if the task is overdue
+     * @return boolean if it is overdue
+     */
     public boolean isOverdue(){
         LocalDateTime currentTime=LocalDateTime.now();
         return getDateTime().isBefore(currentTime);
