@@ -40,11 +40,9 @@ public class UpdateButton extends AbstractSaveButton {
     public void setAction() {
         setOnAction(e -> {
             if(isEverythingValid()) {
-                task.setRepeatType(repeatType);
-                task.setDescription(description);
-                task.setDateTime(dateAndTime(time,date));
-                task.setName(name);
-                task.setNumberOfDays(Integer.parseInt(numberOfDays));
+                Task newTask=new Task(name,description,dateAndTime(time,date),Integer.parseInt(numberOfDays),repeatType);
+                listOfTasks.removeTask(task);
+                listOfTasks.addTask(newTask);
                 listOfTasks.saveTasks();
                 homePage = new HomePage(listOfTasks);
                 stage.setScene(homePage.getScene(stage));

@@ -128,14 +128,10 @@ public class TaskCell extends ListCell<Task> {
         done.setOnAction(e -> {
             if (task.getNumberOfDays()!=0) {
                 LocalDateTime newTime = task.getDateTime().plusDays(task.getNumberOfDays());
-                task.setDateTime(newTime);
-                listOfTasks.updateList();
-                listOfTasks.saveTasks();
-
+                Task newTask = new Task(task.getName(), task.getDescription(), newTime, task.getNumberOfDays(), task.getRepeatType());
+                listOfTasks.addTask(newTask);
             }
-            else {
-                listOfTasks.removeTask(task);
-            }
+            listOfTasks.removeTask(task);
         });
     }
 
