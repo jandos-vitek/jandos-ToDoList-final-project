@@ -42,7 +42,7 @@ public class ListOfTasks implements Serializable {
     /**
      * This updates the ObservableList, so it always matches with the TreeSet
      */
-    private void updateList() {
+    public void updateList() {
         observableTasks.setAll(tasks);
     }
 

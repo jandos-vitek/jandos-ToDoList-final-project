@@ -129,6 +129,7 @@ public class TaskCell extends ListCell<Task> {
             if (task.getNumberOfDays()!=0) {
                 LocalDateTime newTime = task.getDateTime().plusDays(task.getNumberOfDays());
                 task.setDateTime(newTime);
+                listOfTasks.updateList();
                 listOfTasks.saveTasks();
 
             }
